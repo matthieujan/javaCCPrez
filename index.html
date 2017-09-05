@@ -3,14 +3,21 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="description" content="A presentation of JavaCC for the compiler course">
+		<meta name="author" content="Jan_Bezancon">
 
-		<title>reveal.js</title>
+		<title>JavaCC</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!--Add support for earlier versions of Internet Explorer -->
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -24,8 +31,66 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+                <!-- Intro-->
+				<section>
+                    <h1>JavaCC</h1>
+                    <h3>The compiler making compilers</h3>
+                    <p><small>Felix Bezançon</br>
+                        Matthieu Jan</small></p>
+                </section>
+
+                <!-- Historique-->
+                <section>
+                    <section>
+                        <h3>Brief historical breakdown</h3>
+                    </section>
+                    <section>
+                        <h2>Born in 1996 in ver 0.5 by Metamata</h2>
+                        <figure class="fragment">
+                            <img width="70%" height="70%" src='img/N64-Console-Set.png' alt='N64 picture' />
+                            <figcaption>Same year as the N64</figcaption>
+                        </figure>
+                    </section>
+                    <section>
+                        <h2>Till now in ver 4.0</h2>
+                        <figure>
+                            <img src='img/javacc-logo.png' alt='javacc logo' />
+                            <figcaption>use to build, e.g. Apache Derby</figcaption>
+                        </figure>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Composition breakdown</h2>
+                    TODO: parser, ast, etc ....
+                </section>
+
+                <section>
+                    <h2>Grammar.jj breakdown</h2>
+                    TODO: Token, lexem, Rules, functions
+                </section>
+
+                <section>
+                    <h2>Compilation breakdown</h2>
+                    First : Reading through the doc, checking "words" according to the file
+                    Second : Checking syntax
+                    Third : A beautiful syntaxique tree, not yet decorated
+                </section>
+
+                <section>
+                    <h2>But what about our interpreter</h2>
+                    No need for the third part
+                    If the syntax is correct, the expression get us a number
+                    EXECPTION MADE OF THE x/0
+                </section>
+                
+                <section>
+                    <h1>Thank you for listening</h1>
+                    <h4 class="fragment">Now Requesting For Comments</h4>
+                </section>
+
+
+
 			</div>
 		</div>
 
