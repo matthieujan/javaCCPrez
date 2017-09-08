@@ -1,4 +1,5 @@
 # javaCCPrez
+Félix Bezançon & Matthieu Jan
 
 Présentation de javaCC dans le cadre du cours de Théorie des concepts et Langages de programmation.
 
