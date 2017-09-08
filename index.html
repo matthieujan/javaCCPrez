@@ -65,8 +65,8 @@
 										<h2>Grammar.jj breakdown</h2>
 									</section>
 									<section>
-										Token : Define the final language symbols
-										Example : Digit from 0 to 9, operators (multiply, divide, plus, minus)
+										Token : Defines the final language symbols
+                                        <br>Example : Digit from 0 to 9, operators (multiply, divide, plus, minus)
 										<pre><code class="hljs" data-trim contenteditable> TOKEN : /* OPERATORS */
 {
   < PLUS : "+" >
@@ -82,7 +82,7 @@ TOKEN :
 }</code></pre>
 									</section>
 									<section>
-										Rules : Define the tokens arrangement
+										Rule : Defines tokens arrangements
 										<pre><code class="hljs" data-trim contenteditable>void unary() :
 {
   (x = < MINUS > )? element()
@@ -112,20 +112,16 @@ TOKEN :
                 <section>
 									<section>
 										<h2>Composition breakdown</h2>
-										Loading and compile the .jj file JavaCC write java files used to read and translate the source files.
-										TODO: parser, ast, etc ....
+                                        JavaCC read the .jj and generate java files used to read and translate the source files.
 									</section>
 									<section>
-										Class Parser : define the function to read step by step the source file.
-
+										Class Parser : defines the function to read step by step the source file.
 									</section>
 									<section>
-										Class Token : define the source file words used in the parser.
-
+										Class Token : define the source file's words used in the parser.
 									</section>
 									<section>
-										And others : message error, exception, etc.
-
+										And others : error messages, exceptions, etc.
 									</section>
                 </section>
 
