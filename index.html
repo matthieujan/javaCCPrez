@@ -40,7 +40,7 @@
                 </section>
 
                 <!-- Historique-->
-                <section>
+                <!-- <section>
                     <section>
                         <h3>Brief historical breakdown</h3>
                     </section>
@@ -58,32 +58,123 @@
                             <figcaption>use to build, e.g. Apache Derby</figcaption>
                         </figure>
                     </section>
+                </section> -->
+
+                <section>
+									<section>
+										<h2>Grammar.jj breakdown</h2>
+									</section>
+									<section>
+										Token : Define the final language symbols
+										Example : Digit from 0 to 9, operators (multiply, divide, plus, minus)
+										<pre><code class="hljs" data-trim contenteditable> TOKEN : /* OPERATORS */
+{
+  < PLUS : "+" >
+| < MINUS : "-" >
+| < MULTIPLY : "*" >
+| < DIVIDE : "/" >
+}
+
+TOKEN :
+{
+  < CONSTANT : (< DIGIT >)+ >
+| < #DIGIT : [ "0"-"9" ] >
+}</code></pre>
+									</section>
+									<section>
+										Rules : Define the tokens arrangement
+										<pre><code class="hljs" data-trim contenteditable>void unary() :
+{
+  (x = < MINUS > )? element()
+} </code></pre>
+									Equals to :
+									<pre><code class="hljs" data-trim contenteditable> &ltUNARY&gt::== [&ltMINUS&gt] &ltELEMENT&gt </code></pre>
+									</section>
+									<section>
+										Additional action :
+										<pre><code class="hljs" data-trim contenteditable>void unary() :
+{Token x = null;}
+{
+  (x = < MINUS > )? element()
+  {
+    int a = pile.pop();
+    if(x != null){
+      a = -a;
+    }
+    pile.push(a);
+  }
+}
+
+</code></pre>
+
+									</section>
+                </section>
+                <section>
+									<section>
+										<h2>Composition breakdown</h2>
+										Loading and compile the .jj file JavaCC write java files used to read and translate the source files.
+										TODO: parser, ast, etc ....
+									</section>
+									<section>
+										Class Parser : define the function to read step by step the source file.
+
+									</section>
+									<section>
+										Class Token : define the source file words used in the parser.
+
+									</section>
+									<section>
+										And others : message error, exception, etc.
+
+									</section>
                 </section>
 
                 <section>
-                    <h2>Composition breakdown</h2>
-                    TODO: parser, ast, etc ....
-                </section>
-
-                <section>
-                    <h2>Grammar.jj breakdown</h2>
-                    TODO: Token, lexem, Rules, functions
-                </section>
-
-                <section>
+									<section>
                     <h2>Compilation breakdown</h2>
-                    First : Reading through the doc, checking "words" according to the file
-                    Second : Checking syntax
-                    Third : A beautiful syntaxique tree, not yet decorated
+									</section>
+									<section>
+										Parser function example :
+										<pre><code class="hljs" data-trim contenteditable>
+			static final public int one_line() throws Exception {
+	    switch (*readToken()*) {
+	    case MINUS:
+	    case CONSTANT:
+	    case 12:
+	      sum(); exit(0); break;
+	    case 11:
+	      exit(1); break;
+	    default:
+	      throw new Exception();
+	    }
+	  }</code></pre>
+									</section>
                 </section>
 
                 <section>
-                    <h2>But what about our interpreter</h2>
-                    No need for the third part
-                    If the syntax is correct, the expression get us a number
-                    EXECPTION MADE OF THE x/0
+									<section>
+										<h2>But what about our interpreter</h2>
+										A Stack to manage the numbers we use. Each execution of a rule use the stack to feed or empty it.
+									</section>
+                  <section>
+										<pre><code class="hljs" data-trim contenteditable>void sum() :
+{Token x;}
+{
+  term()
+  (  (  x = < PLUS >  |  x = < MINUS > ) term()
+  {
+      int a,b;
+      a = pile.pop();
+      b = pile.pop();
+      if(x.kind == PLUS) {pile.push(b+a);}
+      else{pile.push(b-a);}
+    }
+  )*
+}</code></pre>
+									</section>
+
                 </section>
-                
+
                 <section>
                     <h1>Thank you for listening</h1>
                     <h4 class="fragment">Now Requesting For Comments</h4>
