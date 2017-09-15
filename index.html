@@ -1,103 +1,161 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta name="description" content="A presentation of JJTree for the compiler course">
-		<meta name="author" content="Jan_Bezancon">
 
-		<title>JJTree</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="description" content="A presentation of JJTree for the compiler course">
+	<meta name="author" content="Jan_Bezancon">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+	<title>JJTree</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
 
-        <!--Add support for earlier versions of Internet Explorer -->
-        <!--[if lt IE 9]>
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!--Add support for earlier versions of Internet Explorer -->
+	<!--[if lt IE 9]>
         <script src="lib/js/html5shiv.js"></script>
         <![endif]-->
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-                <!-- Intro-->
-				<section>
-                    <h1>JJTree</h1>
-                    <h3>The part of the compiler making compilers making tree</h3>
-                    <p><small>Felix Bezançon</br>
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<!-- Intro-->
+			<section>
+				<h1>JJTree</h1>
+				<h3>The part of the compiler making compilers making tree</h3>
+				<p><small>Felix Bezançon</br>
                         Matthieu Jan</small></p>
-                </section>
+			</section>
 
-                <section>
-                    <h3>What JavaCC can do on his own</h3>
-                    <p class="fragment">Parse a grammar input file</p>
-                    <p class="fragment">Generate a parser from it</p>
-                    <p class="fragment">Do stuff as it goes</p>
-                </section>
+			<section>
+				<h3>What JavaCC can do on his own</h3>
+				<p class="fragment">Parse a grammar input file</p>
+				<p class="fragment">Generate a parser from it</p>
+				<p class="fragment">Do stuff as it goes</p>
+			</section>
 
-               <section>
-                    <h3>What JavaCC cannot do on his own</h3>
-                    <p class="fragment">Append context to a context-free grammar</p>
-                    <p class="fragment">Make abstraction of the source language</p>
-                    <p class="fragment">Keep a structure of the program</p>
-                    <h1 class="fragment">Here come JJTree</h1>
-                </section>
+			<section>
+				<h3>What JavaCC cannot do on his own</h3>
+				<p class="fragment">Append context to a context-free grammar</p>
+				<p class="fragment">Make abstraction of the source language</p>
+				<p class="fragment">Keep a structure of the program</p>
+				<h1 class="fragment">Here come JJTree</h1>
+			</section>
 
-                <section>
-                    <h3>We need an AST</h3>
-                    Descending syntax analysis -> AST </br>
-                    <ul>
+			<section>
+				<section>
+					<h3>We need an AST</h3> Descending syntax analysis -> AST </br>
+					<ul>
 						<li>Ensure correct state-related operations</li>
 						<li>Get rid of ambiguous problems</li>
 						<li>Get an abstract form the program</li>
 					</ul>
-                </section>
+				</section>
+			</section>
 
-                <section>
-                    <h3>We need an AST maker !</h3>
-                    JJTree automate the AST construction
-                    <ul>
-                        <li>Creating the AST while parsing</li>
+			<section>
+				<section>
+					<h3>We need an AST maker !</h3> JJTree automate the AST construction
+					<ul>
+						<li>Creating the AST while parsing</li>
 						<li>AST nodes can be manipulated (without alterations)</li>
 						<li>Clean the structure's representation</li>
 						<li>We end up with a structure describing the program function</li>
 					</ul>
-                </section>
+				</section>
+			</section>
+			<section>
+				<section>
+					<h1>Using JJTree</h1>
+				</section>
+				<section>
+					Decorating your code using JJTree:
+					<pre><code class="hljs">void unary() #UNARY:
+	{
+		...
+	}</code></pre>
+				</section>
+				<section>
+					Create nodes for your AST :
+					<pre><code class ="hljs">SimpleNode root = parser.one_line();
+root.dump("");</code></pre>
+				</section>
+				<section>
+					Example of display :
+					<pre><code clas ="hljs">Enter an expression ike "1+(2+3)*4;" :1+(2+3)*4;
+EXPRESSION
+ SUM
+  TERM
+   UNARY
+    NUMBER
+  TERM
+   UNARY
+    NUMBER
+     SUM
+      TERM
+       UNARY
+        NUMBER
+      TERM
+       UNARY
+        NUMBER
+       UNARY
+        NUMBER
+OK.
+21</code></pre>
 
-                <section>
-                    <h1>Thank you for listening</h1>
-                    <h4 class="fragment">Now Requesting For Comments</h4>
-                </section>
+				</section>
+			</section>
 
-			</div>
+			<section>
+				<h1>Thank you for listening</h1>
+				<h4 class="fragment">Now Requesting For Comments</h4>
+			</section>
+
 		</div>
+	</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			dependencies: [{
+					src: 'plugin/markdown/marked.js'
+				},
+				{
+					src: 'plugin/markdown/markdown.js'
+				},
+				{
+					src: 'plugin/notes/notes.js',
+					async: true
+				},
+				{
+					src: 'plugin/highlight/highlight.js',
+					async: true,
+					callback: function() {
+						hljs.initHighlightingOnLoad();
+					}
+				}
+			]
+		});
+	</script>
+</body>
+
 </html>
