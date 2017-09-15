@@ -3,10 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta name="description" content="A presentation of JavaCC for the compiler course">
+        <meta name="description" content="A presentation of JJTree for the compiler course">
 		<meta name="author" content="Jan_Bezancon">
 
-		<title>JavaCC</title>
+		<title>JJTree</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
@@ -33,150 +33,52 @@
 			<div class="slides">
                 <!-- Intro-->
 				<section>
-                    <h1>JavaCC</h1>
-                    <h3>The compiler making compilers</h3>
+                    <h1>JJTree</h1>
+                    <h3>The part of the compiler making compilers making tree</h3>
                     <p><small>Felix Bezançon</br>
                         Matthieu Jan</small></p>
                 </section>
 
-                <!-- Historique-->
-                <!-- <section>
-                    <section>
-                        <h3>Brief historical breakdown</h3>
-                    </section>
-                    <section>
-                        <h2>Born in 1996 in ver 0.5 by Metamata</h2>
-                        <figure class="fragment">
-                            <img width="70%" height="70%" src='img/N64-Console-Set.png' alt='N64 picture' />
-                            <figcaption>Same year as the N64</figcaption>
-                        </figure>
-                    </section>
-                    <section>
-                        <h2>Till now in ver 4.0</h2>
-                        <figure>
-                            <img src='img/javacc-logo.png' alt='javacc logo' />
-                            <figcaption>use to build, e.g. Apache Derby</figcaption>
-                        </figure>
-                    </section>
-                </section> -->
-
                 <section>
-									<section>
-										<h2>Grammar.jj breakdown</h2>
-									</section>
-									<section>
-										Token : Defines the final language symbols
-                                        <br>Example : Digit from 0 to 9, operators (multiply, divide, plus, minus)
-										<pre><code class="hljs" data-trim contenteditable> TOKEN : /* OPERATORS */
-{
-  < PLUS : "+" >
-| < MINUS : "-" >
-| < MULTIPLY : "*" >
-| < DIVIDE : "/" >
-}
-
-TOKEN :
-{
-  < CONSTANT : (< DIGIT >)+ >
-| < #DIGIT : [ "0"-"9" ] >
-}</code></pre>
-									</section>
-									<section>
-										Rule : Defines tokens arrangements
-										<pre><code class="hljs" data-trim contenteditable>void unary() :
-{
-  (x = < MINUS > )? element()
-} </code></pre>
-									Equals to :
-									<pre><code class="hljs" data-trim contenteditable> &ltUNARY&gt::== [&ltMINUS&gt] &ltELEMENT&gt </code></pre>
-									</section>
-									<section>
-										Additional action :
-										<pre><code class="hljs" data-trim contenteditable>void unary() :
-{Token x = null;}
-{
-  (x = < MINUS > )? element()
-  {
-    int a = pile.pop();
-    if(x != null){
-      a = -a;
-    }
-    pile.push(a);
-  }
-}
-
-</code></pre>
-
-									</section>
+                    <h3>What JavaCC can do on his own</h3>
+                    <p class="fragment">Parse a grammar input file</p>
+                    <p class="fragment">Generate a parser from it</p>
+                    <p class="fragment">Do stuff as it goes</p>
                 </section>
-                <section>
-									<section>
-										<h2>Composition breakdown</h2>
-                                        JavaCC read the .jj and generate java files used to read and translate the source files.
-									</section>
-									<section>
-										Class Parser : defines the function to read step by step the source file.
-									</section>
-									<section>
-										Class Token : define the source file's words used in the parser.
-									</section>
-									<section>
-										And others : error messages, exceptions, etc.
-									</section>
+
+               <section>
+                    <h3>What JavaCC cannot do on his own</h3>
+                    <p class="fragment">Append context to a context-free grammar</p>
+                    <p class="fragment">Make abstraction of the source language</p>
+                    <p class="fragment">Keep a structure of the program</p>
+                    <h1 class="fragment">Here come JJTree</h1>
                 </section>
 
                 <section>
-									<section>
-                    <h2>Compilation breakdown</h2>
-									</section>
-									<section>
-										Parser function example :
-										<pre><code class="hljs" data-trim contenteditable>
-			static final public int one_line() throws Exception {
-	    switch (*readToken()*) {
-	    case MINUS:
-	    case CONSTANT:
-	    case 12:
-	      sum(); exit(0); break;
-	    case 11:
-	      exit(1); break;
-	    default:
-	      throw new Exception();
-	    }
-	  }</code></pre>
-									</section>
+                    <h3>We need an AST</h3>
+                    Descending syntax analysis -> AST </br>
+                    <ul>
+						<li>Ensure correct state-related operations</li>
+						<li>Get rid of ambiguous problems</li>
+						<li>Get an abstract form the program</li>
+					</ul>
                 </section>
 
                 <section>
-									<section>
-										<h2>But what about our interpreter</h2>
-										A Stack to manage the numbers we use. Each execution of a rule use the stack to feed or empty it.
-									</section>
-                  <section>
-										<pre><code class="hljs" data-trim contenteditable>void sum() :
-{Token x;}
-{
-  term()
-  (  (  x = < PLUS >  |  x = < MINUS > ) term()
-  {
-      int a,b;
-      a = pile.pop();
-      b = pile.pop();
-      if(x.kind == PLUS) {pile.push(b+a);}
-      else{pile.push(b-a);}
-    }
-  )*
-}</code></pre>
-									</section>
-
+                    <h3>We need an AST maker !</h3>
+                    JJTree automate the AST construction
+                    <ul>
+                        <li>Creating the AST while parsing</li>
+						<li>AST nodes can be manipulated (without alterations)</li>
+						<li>Clean the structure's representation</li>
+						<li>We end up with a structure describing the program function</li>
+					</ul>
                 </section>
 
                 <section>
                     <h1>Thank you for listening</h1>
                     <h4 class="fragment">Now Requesting For Comments</h4>
                 </section>
-
-
 
 			</div>
 		</div>
