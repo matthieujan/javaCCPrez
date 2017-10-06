@@ -1,103 +1,146 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta name="description" content="A presentation of JJTree for the compiler course">
-		<meta name="author" content="Jan_Bezancon">
 
-		<title>JJTree</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="description" content="A presentation of JJTree for the compiler course">
+	<meta name="author" content="Jan_Bezancon">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+	<title>JJTree</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
 
-        <!--Add support for earlier versions of Internet Explorer -->
-        <!--[if lt IE 9]>
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!--Add support for earlier versions of Internet Explorer -->
+	<!--[if lt IE 9]>
         <script src="lib/js/html5shiv.js"></script>
         <![endif]-->
+	s
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-                <!-- Intro-->
-				<section>
-                    <h1>JJTree</h1>
-                    <h3>The part of the compiler making compilers making tree</h3>
-                    <p><small>Felix Bezançon</br>
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<!-- Intro-->
+			<section>
+				<h1>SADOUL</h1>
+				<h3>Simple and declarative oriented unified language</h3>
+				<p><small>Felix Bezançon</br>
                         Matthieu Jan</small></p>
-                </section>
+			</section>
+			<section>
+				<section>
+					Structure by block :
+					<pre><code class="hljs">LOOP := for NUMBER times do
+	  STATEMENT+
+	endfor</code></pre>
+					<pre><code>PROGRAM :=
+(FUNCTION|PROCEDURE)*
+algo IDENTIFIER
+DECLARATION*
+begin
+  STATEMENT+
+end</code></pre>
+				</section>
+				<section>
+					Example of loop block :
+					<pre><code class="hljs">for 10 times
+  a = a+1;
+endfor</code></pre> Example of program structure :
+					<pre><code class="hljs">algo HelloWorld
+begin
+ afficher("Hello World !")
+end</code></pre>
+				</section>
+			</section>
 
-                <section>
-                    <h3>What JavaCC can do on his own</h3>
-                    <p class="fragment">Parse a grammar input file</p>
-                    <p class="fragment">Generate a parser from it</p>
-                    <p class="fragment">Do stuff as it goes</p>
-                </section>
+			<section>
+				<section>
+					<h3>Program segmentation :</h3>
+					<pre><code class="hljs">FUNCTION :=
+function TYPE IDENTIFIER(  (PARAM(,PARAM)*)? )
+DECLARATION*
+begin
+  STATEMENT*
+  return ACTION
+end</code></pre>
+				</section>
+				<section>
+					Example :
+					<pre><code class="hljs">function int fonction1(int annee)
+int ret;
+begin
+  ret = annee+1;
+  afficher("Bonne année !");
+  return ret;
+end</code></pre>
+				</section>
+			</section>
 
-               <section>
-                    <h3>What JavaCC cannot do on his own</h3>
-                    <p class="fragment">Append context to a context-free grammar</p>
-                    <p class="fragment">Make abstraction of the source language</p>
-                    <p class="fragment">Keep a structure of the program</p>
-                    <h1 class="fragment">Here come JJTree</h1>
-                </section>
+			<section>
+				Statements :
+				<pre><code class="hljs">STATEMENT := AFFECTATION | IFBLOC | LOOP | PROCCALL</code></pre>
+				<pre><code class="hljs">LOOP := while (LOGICEXPRESSION)
+do
+  STATEMENT+
+endwhile</code></pre>
+			</section>
 
-                <section>
-                    <h3>We need an AST</h3>
-                    Descending syntax analysis -> AST </br>
-                    <ul>
-						<li>Ensure correct state-related operations</li>
-						<li>Get rid of ambiguous problems</li>
-						<li>Get an abstract form the program</li>
-					</ul>
-                </section>
+			<section>
+					Operation :
+					<pre><code>OPERATION :=
+EXPARITHMETIC | EXPLOGIC | EXPSTRING | FUNCALL | VARIABLE</code></pre>
+<pre><code>EXPSTRING := (VARIABLE |"(CHAR|DIGIT)*") (. EXPSTRING)?</code></pre>
+			</section>
 
-                <section>
-                    <h3>We need an AST maker !</h3>
-                    JJTree automate the AST construction
-                    <ul>
-                        <li>Creating the AST while parsing</li>
-						<li>AST nodes can be manipulated (without alterations)</li>
-						<li>Clean the structure's representation</li>
-						<li>We end up with a structure describing the program function</li>
-					</ul>
-                </section>
+			<section>
+				<h1>Thank you for listening</h1>
+				<h4 class="fragment">Now Requesting For Comments</h4>
+			</section>
 
-                <section>
-                    <h1>Thank you for listening</h1>
-                    <h4 class="fragment">Now Requesting For Comments</h4>
-                </section>
-
-			</div>
 		</div>
+	</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			dependencies: [{
+					src: 'plugin/markdown/marked.js'
+				},
+				{
+					src: 'plugin/markdown/markdown.js'
+				},
+				{
+					src: 'plugin/notes/notes.js',
+					async: true
+				},
+				{
+					src: 'plugin/highlight/highlight.js',
+					async: true,
+					callback: function() {
+						hljs.initHighlightingOnLoad();
+					}
+				}
+			]
+		});
+	</script>
+</body>
+
 </html>
