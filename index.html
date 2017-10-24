@@ -8,7 +8,7 @@
 	<meta name="description" content="A presentation of JJTree for the compiler course">
 	<meta name="author" content="Jan_Bezancon">
 
-	<title>JJTree</title>
+	<title>Learn with Sadoul</title>
 
 	<link rel="stylesheet" href="css/reveal.css">
 	<link rel="stylesheet" href="css/theme/black.css">
@@ -36,79 +36,34 @@
 		<div class="slides">
 			<!-- Intro-->
 			<section>
-				<h1>SADOUL</h1>
-				<h3>Simple and declarative oriented unified language</h3>
+				<h1>Learn programmation !</h1>
+				<h3>With the brand new SADOUL</h3>
+                <small>Simple And Declarative Oriented Unified Language</small>
 				<p><small>Felix Bezançon</br>
                         Matthieu Jan</small></p>
 			</section>
 			<section>
 				<section>
-					Structure by block :
-					<pre><code class="hljs">LOOP := for NUMBER times do
-	  STATEMENT+
-	endfor</code></pre>
-					<pre><code>PROGRAM :=
-(FUNCTION|PROCEDURE)*
-algo IDENTIFIER
-DECLARATION*
-begin
-  STATEMENT+
-end</code></pre>
 				</section>
 				<section>
-					Example of loop block :
-					<pre><code class="hljs">for 10 times
-  a = a+1;
-endfor</code></pre> Example of program structure :
-					<pre><code class="hljs">algo HelloWorld
-begin
- afficher("Hello World !")
-end</code></pre>
 				</section>
 			</section>
 
 			<section>
 				<section>
-					<h3>Program segmentation :</h3>
-					<pre><code class="hljs">FUNCTION :=
-function TYPE IDENTIFIER(  (PARAM(,PARAM)*)? )
-DECLARATION*
-begin
-  STATEMENT*
-  return ACTION
-end</code></pre>
 				</section>
 				<section>
-					Example :
-					<pre><code class="hljs">function int fonction1(int annee)
-int ret;
-begin
-  ret = annee+1;
-  afficher("Bonne année !");
-  return ret;
-end</code></pre>
 				</section>
 			</section>
 
 			<section>
-				Statements :
-				<pre><code class="hljs">STATEMENT := AFFECTATION | IFBLOC | LOOP | PROCCALL</code></pre>
-				<pre><code class="hljs">LOOP := while (LOGICEXPRESSION)
-do
-  STATEMENT+
-endwhile</code></pre>
 			</section>
 
 			<section>
-					Operation :
-					<pre><code>OPERATION :=
-EXPARITHMETIC | EXPLOGIC | EXPSTRING | FUNCALL | VARIABLE</code></pre>
-<pre><code>EXPSTRING := (VARIABLE |"(CHAR|DIGIT)*") (. EXPSTRING)?</code></pre>
 			</section>
 
 			<section>
-				<h1>Thank you for listening</h1>
-				<h4 class="fragment">Now Requesting For Comments</h4>
+				<h1>And now ... Demo !</h1>
 			</section>
 
 		</div>
