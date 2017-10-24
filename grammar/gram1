@@ -1,41 +1,32 @@
 CHAR := [a-z]|[A-Z]
 DIGIT := [0-9]
-DIGITNO := [1-9]
-IDENTIFIER := CHAR(CHAR|DIGIT)*
-TYPE := (int | bool | string)([NUMBER])?
+NUMBER := (DIGIT)+
+BOOL := true | false
 
-BASICPROC := afficher(EXPRSTRING)
-BASICFUN := saisirEntier()
-BASICFUN := intToString(EXPARITHMETIC)
-BASICFUN := stringToInt(EXPSTRING)
+IVARIABLE := "i_" (CHAR | NUMBER)+
+BVARIABLE := "b_" (CHAR | NUMBER)+
+SVARIABLE := "s_" (CHAR | NUMBER)+
 
-
-PROGRAM := (FUNCTION|PROCEDURE)* algo IDENTIFIER DECLARATION* begin STATEMENT+ end
-    FUNCTION := function TYPE IDENTIFIER(     (PARAM(,PARAM)*)?   ) DECLARATION* begin STATEMENT* return ACTION end
-    PROCEDURE := proc IDENTIFIER(     (PARAM(,PARAM)*)?   ) DECLARATION* begin STATEMENT+ end
-        PARAM := TYPE IDENTIFIER;
-
-    DECLARATION := TYPE IDENTIFIER (, IDENTIFIER);
-
-    STATEMENT := AFFECTATION | IFBLOC | LOOP | PROCCALL
-        AFFECTATION := IDENTIFIER = OPERATION;
-            OPERATION := EXPARITHMETIC | EXPLOGIC | EXPSTRING | FUNCALL | VARIABLE
-                VARIABLE := IDENTIFIER([NUMBER])?
-                STRINGPARAM := "(CHAR|DIGIT)*"
-                FUNCALL := CALL | BASICFUN
-                PROCCALL := CALL | BASICPROC;
-                CALL := IDENTIFIER(  (OPERATION(,OPERATION)*)?  )
-                EXPARITHMETIC := TERM ((+|-) TERM)*
-                    TERM := UNARY ((*|/|%) UNARY)*
-                    INTEGER := (-)? NUMBER
-                    NUMBER := 0 | DIGITNO DIGIT*| (EXPARITHMETIC)| VARIABLE
-                EXPLOGIC := EXPET (|| EXPET)*
-                    EXPET := TERMLOG (&& TERMLOG)*
-                    TERMLOG := ELEMENTLOG | !ELEMENTLOG
-                    ELEMENTLOG := VALUELOG | OPERATION > OPERATION | OPERATION < OPERATION | OPERATION == OPERATION
-                    VALUELOG := true | false | (EXPLOGIC) | VARIABLE
-                EXPSTRING := (VARIABLE |"(CHAR|DIGIT)*") (. EXPSTRING)?
-        IFBLOC := if (LOGICEXPRESSION) then STATEMENT+ ELSEBLOC endif
-            ELSEBLOC := else STATEMENT+ | &
-        LOOP := while (LOGICEXPRESSION) do STATEMENT+ endwhile
-        LOOP := for NUMBER times do STATEMENT+ endfor
+PROGRAM := algo IDENTIFIER DECLARATION* begin STATEMENT+
+    IDENTIFIER := CHAR (CHAR | NUMBER)*
+    DECLARATION := VARIABLE
+      VARIABLE := BVARIABLE | IVARIABLE | SVARIABLE
+    STATEMENT := (AFFECTATION | IFBLOCK | LOOPBLOCK)
+      AFFECTATION := into VARIABLE affect OPERATION
+        OPERATION := EXPLOGIC | EXPARITHMETIC | EXPSTRING | VARIABLE
+        EXPLOGIC := EXPET (|| EXPET)*
+            EXPET := TERMLOG (&& TERMLOG)*
+            TERMLOG := ELEMENTLOG | !ELEMENTLOG
+            ELEMENTLOG := VALUELOG | EXPARITHMETIC ( > | < | == ) EXPARITHMETIC
+            VALUELOG := BOOL | (EXPLOGIC) | VARIABLE
+            EXPARITHMETIC := TERM ((+|-) TERM)*
+                TERM := UNARY ((*|/|%) UNARY)*
+                UNARY := (-)? NUMBER
+                NUMBER := VARIABLE | (EXPARITHMETIC)| NUMBER
+            EXPSTRING := " CHAR+ "
+      IFBLOCK := if OPERATION THENBLOCK (ELSEBLOCK)? endif
+        THENBLOCK := then (STATEMENT)+ endthen
+        ELSEBLOCK := else (STATEMENT)+ endelse
+      LOOPBLOCK := (FORBLOCK | WHILEBLOCK)
+        FORBLOCK := for OPERATION times do (STATEMENT)+ endfor
+        WHILEBLOCK := while OPERATION do (STATEMENT)+ endwhile

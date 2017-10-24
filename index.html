@@ -44,24 +44,110 @@
 			</section>
 			<section>
 				<section>
-				</section>
-				<section>
-				</section>
-			</section>
+				<h2>Grammar changes</h2>
 
+				<pre><code>CHAR := [a-z]|[A-Z]
+DIGIT := [0-9]
+NUMBER := (DIGIT)+
+BOOL := true | false
+
+IVARIABLE := "i_" (CHAR | NUMBER)+
+BVARIABLE := "b_" (CHAR | NUMBER)+
+SVARIABLE := "s_" (CHAR | NUMBER)+
+			</code></pre>
+		</section>
+		<section>
+			<h2>Grammar changes</h2>
+
+			<pre><code>PROGRAM := algo IDENTIFIER DECLARATION* begin STATEMENT+
+  IDENTIFIER := CHAR (CHAR | NUMBER)*
+  DECLARATION := VARIABLE
+    VARIABLE := BVARIABLE | IVARIABLE | SVARIABLE
+  STATEMENT := (AFFECTATION | IFBLOCK | LOOPBLOCK)
+    AFFECTATION := into VARIABLE affect OPERATION
+      OPERATION := EXPLOGIC | EXPARITHMETIC | EXPSTRING | VARIABLE
+		</code></pre>
+		</section>
+		<section>
+			<h2>Grammar changes</h2>
+			<pre><code> EXPLOGIC := EXPET (|| EXPET)*
+  EXPET := TERMLOG (&& TERMLOG)*
+    TERMLOG := ELEMENTLOG | !ELEMENTLOG
+      ELEMENTLOG := VALUELOG | EXPARITHMETIC ( > | < | == ) EXPARITHMETIC
+        VALUELOG := BOOL | (EXPLOGIC) | VARIABLE
+  EXPARITHMETIC := TERM ((+|-) TERM)*
+    TERM := UNARY ((*|/|%) UNARY)*
+      UNARY := (-)? NUMBER
+        NUMBER := VARIABLE | (EXPARITHMETIC)| NUMBER
+  EXPSTRING := " CHAR+ "
+		</code></pre>
+		</section>
+		<section>
+			<h2>Grammar changes</h2>
+			<pre><code>IFBLOCK := if OPERATION THENBLOCK (ELSEBLOCK)? endif
+  THENBLOCK := then (STATEMENT)+ endthen
+  ELSEBLOCK := else (STATEMENT)+ endelse
+LOOPBLOCK := (FORBLOCK | WHILEBLOCK)
+  FORBLOCK := for OPERATION times do (STATEMENT)+ endfor
+  WHILEBLOCK := while OPERATION do (STATEMENT)+ endwhile
+		</code></pre>
+
+		</section>
+		</section>
+
+</code></pre>
+			</section>
 			<section>
 				<section>
+					<h2>Language presentation</h2>
 				</section>
 				<section>
+					<h3>First Step</h3>
+					<pre><code class="hljs">algo HelloWorld
+begin
+end</code></pre>
+				<p class="fragment">But why would you make a program to do nothing?</p>
+				</section>
+				<section>
+					<pre><code class="hljs">algo HelloWorld
+  s_mess
+begin
+  into s_mess affect "HelloWorld"
+end</code></pre>
+<pre><code class="hljs">Var content :
+s_mess = HelloWorld</code></pre>
+<p class="fragment">But wait, there is more !</p>
+				</section>
+				<section>
+					<h3>Conditional</h3>
+					<pre><code class="hljs">algo HelloWorld
+  s_mess
+  b_test
+begin
+  into b_test affect false
+  if b_test
+    then into s_mess affect "HelloWorld" endthen
+    else into s_mess affect "GoodByeWorld" endelse
+  endif
+end</code></pre>
+<pre><code class="hljs">Var content :
+s_mess = GoodByeWorld
+b_test = false</code></pre>
+				</section>
+				<section>
+					<h3>Loop</h3>
+					<pre><code class="hljs">algo HelloWorld
+  i_cpt
+begin
+  into i_cpt affect 0
+  for 10 times do
+    into i_cpt affect i_cpt+1
+  endfor
+end</code></pre>
+<pre><code class="hljs">Var content :
+i_cpt = 10</code></pre>
 				</section>
 			</section>
-
-			<section>
-			</section>
-
-			<section>
-			</section>
-
 			<section>
 				<h1>And now ... Demo !</h1>
 			</section>
